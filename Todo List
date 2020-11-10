@@ -1,0 +1,24 @@
+Todo List 
+
+
+[ ] Select which metrics I want to include in the dashboard
+[X] Get the unique count for all headers in each event
+[ ] If there is a comment metric, add word chart
+[ ] Calculate duration watched
+[ ] Create the heat map
+[ ] Calculate the Interaction score on a 1 - 10 scale.
+[ ] Create all the empty variables for the export json
+[ ] Calculate region based on location
+[ ] Calculate the overview metrics and the subevent metrics
+[ ] If yes or no question then treat it differently
+[ ] Metrics with fewer response types are probably more important.
+[ ] Postal Code to City
+[ ] Create custom area to display comments
+[X] Reset the position of the second screen when select subevent
+
+
+THINGS I NEED 
+[ ] IP address
+[ ] Start and Stop time of each event
+[ ] Navigator
+

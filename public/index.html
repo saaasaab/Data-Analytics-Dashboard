@@ -1,0 +1,1880 @@
+<html>
+
+<head> 
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+
+  <style>
+    /*text-grey = rgba(144,140,160,1) */
+    /*background Color = #262626*/
+    
+    :root {
+      --main-bg-color: #262626;
+      --text-color:rgba(210,210,210,1);
+      --dark-shadow:6px 6px 8px 0 rgba(0,0,0,.2),
+        -4px -4px 6px 0 rgba(58, 58, 58, 0.3);;
+
+    }
+    .overview{
+      display: grid;
+      margin-left: 15px;
+      grid-template-columns: 4fr 1fr;
+
+    }
+    .overview_name{
+      /*border:1px solid #c3d1b4;*/
+      color:var(--text-color);
+      font-size: 48;
+      font-family: 'Lato', sans-serif;
+    }
+
+    .back_button{
+      border: none;
+      font-size: 1.5em;
+      padding:10px;
+      padding-left:  15px;
+      padding-right:  15px;
+      margin: 0;
+      posi6px 6pxtion: absolute;
+      top: 50%;
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      font-size: 18;
+      color:var(--text-color);
+      position: relative;
+      background-color: var(--main-bg-color);
+      box-shadow: var(--dark-shadow);
+      border-radius: 10px;
+    }
+
+    .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        grid-gap: 5px;
+        padding: 5px;
+    }
+
+
+    .h1{
+      font-size: large;
+    }
+    .gridsquare{
+      
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      text-align: left;
+      margin: 5px;
+      padding: 5px;
+      padding-left: 10px;
+      
+      /*background-color: var(--main-bg-color);*/
+      box-shadow: var(--dark-shadow);
+      border-radius: 10px;
+
+    }
+
+    .headBox {
+        display: grid;
+        grid-template-columns: 1fr 1fr ;
+        grid-gap: 5px;
+        /*padding: 5px;*/
+        /*border:1px solid #c3d1b4;*/
+    } 
+
+    .mapBox{
+
+      min-width: 200px;
+      border-radius: 10px;
+      background-color: var(--main-bg-color);
+      box-shadow: var(--dark-shadow);
+      border-radius: 10px;
+      padding: 15px;
+    }
+    .heatmap{
+      margin: 15px;
+      width: 100%;
+      height: 100%;
+    }
+
+    .donuts {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+/*        display: flex;
+        justify-content: space-between;*/
+
+        /*grid-gap: 1px;*/
+        /*padding: 5px;*/
+        /*border:1px solid #c3d1b4;*/
+        background-color: var(--main-bg-color);
+    } 
+
+    .donut{
+      /*border:1px solid #c3d1b4;*/
+      /*background-color: #fbfbfbfb; */
+      margin: 10px;
+      padding: 10px;
+      /*width: 80% !important;
+      height: 100px !important;*/
+      position: relative;
+            background-color: var(--main-bg-color);
+      box-shadow: var(--dark-shadow);
+      border-radius: 10px;
+
+    }
+
+
+
+    .subevent{
+        display: grid;
+        grid-template-columns: repeat( auto-fit, minmax(1px, 1fr) );
+        transition: 0.3s;
+        cursor: pointer;
+        
+        /*border:1px solid #c3d1b4;*/
+    }
+    .subevent.data:hover{
+      background-color: #3e8e41;
+      color: black;
+    }
+    .subevent.header{
+      font-size: 20;
+    }
+
+    .submetricValue{
+      /*border:1px solid #c3d1b4;*/
+      /*background-color: #fbfbfbfb; */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px;
+      padding: 10px;
+      font-size: 1.5em;
+      height: 50px;
+      color:var(--text-color);
+      background-color: var(--main-bg-color);
+      box-shadow: var(--dark-shadow);
+      border-radius: 10px;
+    }
+
+    .submetricNum{
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-right: 15px;
+      font-size: 1.3em;
+      word-wrap: break-word;
+      color:var(--text-color);
+    }
+
+    .submetricName{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1px;
+      font-size: 1.3em;
+      word-wrap: break-word;
+      color:var(--text-color);
+    }
+
+    .submetric{
+      border:1px solid #cccccc;
+
+    }
+
+    .spacer{
+      height:20px;
+    }
+
+
+    .toplineLabel{
+      color:var(--text-color);
+      font-size: 1em;
+    }
+
+    .toplineValue{
+      font-size: 1.5em;
+      color:var(--text-color);
+      text-align: center;
+    }
+
+    .timeline{
+
+    }
+
+    .body{
+      background-color: var(--main-bg-color);
+    }
+
+    .dashboard{
+        
+        font-family: 'Lato', sans-serif;
+        display: grid;
+        grid-template-columns: 1fr 9fr 1fr;
+        grid-gap: 5px;
+        padding: 5px;
+        height:50px;
+        /**/
+    }
+
+
+
+
+    .overview_toggle {
+      position: relative;
+      display: inline-block;
+      margin: auto !important;
+      width: 60px;
+      height: 34px;
+    }
+
+    .overview_toggle input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+
+
+
+    /* Table Styling*/
+    .tableArea{
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 20px;
+    }
+
+    table.data-table tbody {
+      display: block;
+      max-height: 200px;
+      overflow-y: scroll;
+    }
+
+    thead{
+      border:1px solid #c3d1b4;
+    }
+    table.data-table thead, table.data-table tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    .data-header{
+      
+      color: var(--text-color);
+
+    }
+
+    td{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text-color);
+      /*border-bottom: 1px solid rgba(210,210,210,1);*/
+    }
+    .tableDiv{
+      color:var(--text-color);
+      background-color: var(--main-bg-color);
+      box-shadow: var(--dark-shadow);
+      border-radius: 10px;
+    }
+
+
+
+  </style>
+  <script language="javascript"> 
+    //var json = require('./Data_To_Dashboard.json'); //(with path)
+    //IP ADDRESS TO LOCATION: https://ipapi.co/108.161.49.101/json/
+
+
+    let obj;
+
+    async function catchData() {
+      //const response = await fetch('json_dump.json');
+      const response = await fetch('../pull_json.js');
+      const data = await response.json();
+      return data
+    }
+
+
+    function createSpacer(e){
+      var spacer = document.createElement("div");
+      spacer.className="spacer"
+      e.appendChild(spacer);
+      return e
+    }
+
+
+    function genStructureOverview(obj, title, overTF){
+      var overview = document.createElement("div");
+      overview.className = "overview";
+
+      var overview_name = document.createElement("h1");
+      overview_name.className = "overview_name";
+
+      overview_name.innerText = title; //obj["Overview_Page"]["Event"] // "Event Overview";
+
+      var overview_toggle = document.createElement("label");
+      overview_toggle.className = "overview_toggle";
+
+
+      if(!overTF){
+        var back_button = document.createElement("button");
+        back_button.textContent = "Return to Overview";
+        back_button.id = "back_button";
+        back_button.className = "back_button";
+        back_button.onclick = function() {
+          var myobj = document.getElementById("dashboard");
+          myobj.remove();
+          genOverviewDashboard();
+          };
+        overview_toggle.appendChild(back_button);
+      }
+
+      overview.appendChild(overview_name);
+      overview.appendChild(overview_toggle);
+      return(overview);
+    }
+
+
+
+
+    function getSubeventIndex(obj, title, overTF){
+      let index = 0
+      let subevents = obj["Subevents"];
+      if (!overTF){
+        let count = 0
+        for (let d of subevents){
+
+          if(d["Name"]==title){
+            {index = count;}
+          }
+          count++;
+        }
+      }
+      return index
+    }
+
+    function genToplineMetrics(obj,mapShow, overTF,title){
+      var topline = document.createElement("div"); 
+      topline.className = "topline";
+
+
+      //HOW DO I GET THE INDEX OF SUBEVENTS?
+
+      let index = getSubeventIndex(obj, title, overTF);
+      Top_Level_Metrics = overTF?obj["Overview_Page"]["Metrics"]:obj["Subevents"][index]["Metrics"];
+      data = [];
+      labels = [];
+
+      //console.log(Top_Level_Metrics);
+      for (let metric of Object.keys(Top_Level_Metrics)){
+      //for (let metric of Top_Level_Metrics){
+        data.push(Top_Level_Metrics[metric]);
+        labels.push(metric);
+        //console.log(metric["Metric_Name"]);
+      }
+      //console.log(data,labels);
+
+      numElems = data.length;
+      if(mapShow){
+        numCols = 3;
+      }
+      else{
+        numCols = 5;
+      }
+      //let backgroundColors = ["#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd"];
+      //let backgroundColors = ["#555555","#222222","#b2b2b2","#313131","#191919"];
+
+      numRows =  Math.ceil(data.length / numCols);
+      for(var i = 0; i < numRows; i++){ 
+        var row = document.createElement("div"); 
+        row.className = "row"; 
+        row.id = "row"; 
+        for(var x = 0; x < numCols; x++){ 
+          if ((i * numCols) + x < data.length){
+            var cell = document.createElement("div"); 
+            cell.className = "gridsquare";
+            //cell.style.background = backgroundColors[randBetween(0, 4)];
+
+
+            var toplineLabel = document.createElement("div");
+            toplineLabel.className= "toplineLabel";
+
+            var toplineValue = document.createElement("div");
+            toplineValue.className= "toplineValue";
+
+            toplineLabel.innerText = labels[(i * numCols) + x];
+            toplineValue.innerText = numberWithCommas(data[(i * numCols) + x]);
+
+            cell.appendChild(toplineLabel);
+            cell.appendChild(toplineValue);
+
+            //cell.innerText = data[(i * numCols) + x];
+            row.appendChild(cell); 
+          }
+        } 
+        topline.appendChild(row); 
+      } 
+
+      return(topline);
+    }
+
+
+
+
+
+
+    function genDonuts(numDonuts){
+      var donuts = document.createElement("div");
+      donuts.className="donuts";
+      for(let i = 0; i < numDonuts; i++){
+        var donut = document.createElement("canvas");
+
+        donut.className="donut";
+        donut.id="donut-chart"+i;   
+        donuts.appendChild(donut);
+      }
+
+      return donuts
+    }
+
+
+
+
+
+
+    function genSubeventMetricList(obj){
+      var subevents = document.createElement("div");
+      subevents.className="subevents";
+
+
+      let subeventNamesAll=[];
+      let subeventMetricNamesAll = [];
+      let subeventValuesAll = [];
+
+      for(let s of obj["Subevents"]){
+        
+        subeventNamesAll.push(s["Name"]);
+        //console.log(s);
+        for (let key of Object.keys(s["Metrics"])){
+          if(!subeventMetricNamesAll.includes(key)){
+            subeventMetricNamesAll.push(key);
+          }
+        }
+      }
+
+      for(let s of obj["Subevents"]){
+        let value_array=[]
+        for(let mn of subeventMetricNamesAll){
+          value_array.push(s["Metrics"][mn])
+        }
+        subeventValuesAll.push(value_array);
+      }
+
+
+      let subeventNames=subeventNamesAll//[];
+      let subeventMetricNames = []//subeventMetricNamesAll;//[];
+      let subeventValues = []//subeventValuesAll//[];
+
+      let index_metrics = [2,3,9,8];
+
+      for (let sv of subeventValuesAll){
+        let value_array=[]
+        for(let i of index_metrics){
+          if(!subeventMetricNames.includes(subeventMetricNamesAll[i])){
+
+            subeventMetricNames.push(subeventMetricNamesAll[i]);
+
+          }
+          if(sv[i] == null){
+            value_array.push(0);
+          }
+          else{
+            value_array.push(sv[i]);
+          }
+          
+        }
+        subeventValues.push(value_array);
+      }
+
+
+      for(let i = 0; i < subeventNames.length + 1; i++){
+        var subevent= document.createElement("div");
+        subevent.className = i>0 ? "subevent data" : "subevent header";
+
+
+        subevent.id = i>0 ?  subeventNames[i-1]: "subevent header";
+
+        subevent.addEventListener('click', function () {
+        i>0 ? pass_to_subevent(this.id) : null;
+        });
+        
+  
+
+
+        for(let j = 0; j < subeventMetricNames.length+1; j++){
+          var submetric= document.createElement("div");
+          if (i==0 && j!=0){
+            submetric.innerText = subeventMetricNames[j-1];
+            submetric.className = "submetricName";
+          }
+          else if (j==0 && i!=0){
+            submetric.innerText = subeventNames[i-1];
+            submetric.className = "submetricNum";
+          }
+          else if (j==0 && i==0){
+            submetric.innerText = "";
+          }
+
+          else{
+            submetric.innerText = numberWithCommas(subeventValues[i-1][j-1]);
+            submetric.className = "submetricValue";
+          }
+          
+          
+          subevent.appendChild(submetric);
+        }
+        subevents.appendChild(subevent);
+      }
+      return subevents;
+    }
+
+
+
+
+
+
+
+
+
+    function setLayoutToplineMap(mapShow){
+      if(mapShow){
+        let headBoxes = document.getElementsByClassName("headBox");
+        for (let hb of headBoxes){
+          hb.style.gridTemplateColumns = "1fr 1fr";
+        }
+
+        let rows= document.getElementsByClassName("row");
+        for (r of rows){
+          r.style.gridTemplateColumns = "1fr 1fr 1fr";
+        }
+      }
+      else{
+
+        let headBoxes = document.getElementsByClassName("headBox");
+        for (let hb of headBoxes){
+          hb.style.gridTemplateColumns = "1fr";
+        }
+
+
+        let rows= document.getElementsByClassName("row");
+        for (r of rows){
+          r.style.gridTemplateColumns = "1fr 1fr 1fr 1fr 1fr";
+        }
+      }
+    }
+
+
+
+
+
+
+
+
+
+    function setDonutContent(obj, overTF, title){
+      var ctx = document.getElementById("donut-chart0").getContext("2d");
+      let index = getSubeventIndex(obj, title, overTF);
+
+      let Donut_Charts= overTF?obj["Overview_Page"]["Donut_Charts"]:obj["Subevents"][index]["Donut_Charts"];
+      
+      let count = 0;
+      for (let d_chart of Donut_Charts){
+        label = d_chart["Donut_Flavor"]
+        values = []
+        labels = []
+        pairs = d_chart["Donut_Values"];
+        for (let key of Object.keys(pairs)){
+          labels.push(key);
+          values.push(pairs[key])
+        }
+
+        donutChart("donut-chart"+count,label, labels,values);
+        count++;
+      }
+    }
+
+
+
+
+
+
+
+
+   function donutChart(elementId,label, labels, values){
+        
+      canvas = document.getElementById(elementId);
+            // var myCanvas = document.getElementById(elementId);
+      canvas.width = 600;
+      canvas.height = 300;
+      new Chart(canvas, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: label,
+              backgroundColor: ["#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd"],
+
+              data: values,
+            }
+          ]
+        },
+        options: {
+          defaultFontFamily: Chart.defaults.global.defaultFontFamily = 'Lato',
+          responsive: false,
+          maintainAspectRatio: false,
+          title: {
+            display: true,
+            text: label,
+            fontSize:30,
+            fontColor:"#d2d2d2",
+            position: "bottom"
+          },
+          legend: {
+            position: 'left',
+            labels: {
+                    fontColor: "#d2d2d2",
+                    fontSize: 12
+                }
+            //fontColor:"#d2d2d2",
+          },
+
+        }
+      });   
+    }
+
+
+
+    function setTimeline(){
+      var timeline = document.createElement("canvas");
+      timeline.className = "timeline";
+      timeline.id = "timeline";
+       timeline.height = 100;
+      return timeline
+    }
+
+
+
+
+    function timeline(chartid,subevent_name){
+      var events = [
+        ["Welcome",300000],
+        ["Speaker 1",600000],
+        ["Speaker 2",2100000],
+        ["Speaker 3",4450000],
+        ["Speaker 4",4950000]];
+      let canvas = document.getElementById(chartid);
+      var ctx = canvas.getContext('2d');
+        // Global Options
+      // canvas.width  = 400;
+      // canvas.height = 300; 
+      // canvas.style.width  = '400px';
+      // canvas.style.height = '300px';
+
+
+      //var chartData = generateData();
+
+      let chartData = obj["Subevents"][getSubeventIndex(obj, subevent_name, false)]["Timeline"];
+
+      console.log(generateData());
+      console.log(obj);
+      var s1 = {
+        label: 's1',
+        borderColor: 'green',
+        data: chartData,
+        lineTension:.1,
+        pointRadius:0,
+        borderWidth:.5,
+        backgroundColor: '#07a31e11',
+      };
+
+      
+      var chart = new Chart(ctx, {
+        type: 'line',
+        data: { datasets: [s1] },
+        options: {
+          scales: {
+            xAxes: [{
+              type: 'time',
+              distribution: "series",
+              offset:true,
+              ticks:{
+                major:{
+                  enabled: true,
+                  fontStyle: "bold"
+                },
+                source: "data",
+
+              },
+              time: {
+                displayFormats: {
+                  minute: 'h:mm a'
+                }
+              }
+            }]
+          },
+          tooltips: {
+            intersect: false,
+            mode: "index",
+            caretPadding: 1,
+            caretSize:5,
+            cornerRadius: 10,
+            rtl: false,
+            custom: function(tooltip) {
+              if (!tooltip) return;
+                  // disable displaying the color box;
+                  tooltip.displayColors = false;
+              },
+            callbacks: {
+              label: function(tooltipItem, data) {
+                
+                var event = "";
+                var nowTime = tooltipItem.xLabel;
+
+                for (var i = 0; i < events.length; i++){
+                  if(nowTime<=events[i][1]){
+                    event = events[i][0];
+                    break;
+                  }
+                }
+                if (label) {
+                  label += ': ';
+                }
+                var label = [event,"Attendees: "+Math.round(tooltipItem.yLabel)];
+
+                return label;
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function tablify(tableData, tableName){
+      let tableDiv = document.createElement('div');
+      tableDiv.className = "tableDiv";
+
+      let table = document.createElement('table');
+      table.className = "data-table";
+
+      let thead = document.createElement("thead");
+      thead.className = "thead";
+
+
+      let thMetric = document.createElement('th'); 
+      let thValue = document.createElement('th'); 
+      // let thPercentage = document.createElement('th'); 
+
+      thMetric.className = "data-header";
+      thValue.className = "data-header";
+      // thPercentage.className = "data-header";
+
+      let textMetric = document.createTextNode(tableName);
+      let textValue = document.createTextNode(`Count`);
+      // let textPercentage = document.createTextNode(`Percentage`);
+
+      thMetric.appendChild(textMetric);
+      thValue.appendChild(textValue);
+      // thPercentage.appendChild(textPercentage);
+
+      thead.appendChild(thMetric);
+      thead.appendChild(thValue);
+      // thead.appendChild(thPercentage);
+
+      table.appendChild(thead);
+
+      let tbody = document.createElement("tbody");
+      tbody.className = "tbody";
+      
+      //console.log(tableData, tableName);
+      //for (let r = 0; r < 15; r++){ 
+      for (r of Object.keys(tableData)){
+          let tr = document.createElement('tr');  
+          for (let c = 0; c < 2; c++ ){
+            let td = document.createElement('td');
+
+            let textValue = c==0 ? r: ((c==1)? tableData[r]:`Cell ${3+c}`)
+            let text = document.createTextNode(textValue);
+            td.appendChild(text);
+            tr.appendChild(td);
+          } 
+          tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+      tableDiv.appendChild(table);
+      //console.log(table);
+      return tableDiv
+    }
+
+
+
+
+    function genOverviewDashboard(){ 
+      var c = document.body; // whatever you want to append the rows to: 
+      let overTF = true;
+      let mapShow = false;
+      
+      var dashboard = document.createElement("div");
+      dashboard.className = "dashboard";
+      dashboard.id = "dashboard";
+
+      var leftBuffer = document.createElement("div");
+      leftBuffer.className = "leftBuffer";
+
+      var centerContent = document.createElement("div");
+      centerContent.className = "centerContent";
+
+      var rightBuffer = document.createElement("div");
+      rightBuffer.className =   "rightBuffer";
+      
+      //Create the overview structure
+        
+      let title =  obj["Overview_Page"]["Event"];
+      centerContent.appendChild(genStructureOverview(obj,title,overTF));
+    
+      //Create the topline metrics and map 
+      let toplineAndMap = document.createElement("div"); 
+      toplineAndMap.className = "headBox"; 
+      toplineAndMap.id = "headBox"; 
+      toplineAndMap.appendChild(genToplineMetrics(obj, mapShow,overTF, title));
+
+
+      //Create the map box
+      if (mapShow){
+        let mapBox = document.createElement("div"); 
+        mapBox.className = "mapBox";
+        let img = document.createElement("img")
+        img.className = "Heatmap";
+
+        mapBox.appendChild(img);
+
+        toplineAndMap.appendChild(mapBox);
+      }
+      else{ }
+
+      //Create the topline metrics and the map space
+      centerContent.appendChild(toplineAndMap); 
+
+      //Create some Spacers
+      createSpacer(centerContent);
+
+      //Create the donuts
+      centerContent.appendChild(genDonuts(numDonuts = 2));
+
+      //Create some Spacers
+      createSpacer(centerContent);
+
+      //Create the Subevent level metrics
+      centerContent.appendChild(genSubeventMetricList(obj));
+      createSpacer(centerContent);
+
+      //add all the pieces to the dashboard
+      dashboard.appendChild(leftBuffer);
+      dashboard.appendChild(centerContent);
+      dashboard.appendChild(rightBuffer);
+
+      //add the dashboard to the DOM
+      c.appendChild(dashboard);
+
+      // Set formatting and fill charts
+      setLayoutToplineMap(mapShow);
+      setDonutContent(obj, overTF,title);
+    
+    }
+
+
+
+    function genSubeventDashboard(subevent_name){ 
+      var myobj = document.getElementById("dashboard");
+      myobj.remove();
+
+
+      var c = document.body; // whatever you want to append the rows to: 
+      c.scrollTop = 0;
+
+
+      let mapShow = true;
+      let overTF = false;
+      
+      var dashboard = document.createElement("div");
+      dashboard.className = "dashboard";
+      dashboard.id = "dashboard";
+
+      var leftBuffer = document.createElement("div");
+      leftBuffer.className = "leftBuffer";
+
+      var centerContent = document.createElement("div");
+      centerContent.className = "centerContent";
+
+      var rightBuffer = document.createElement("div");
+      rightBuffer.className =   "rightBuffer";
+      
+      //Create the overview structure
+      let title= subevent_name;
+      centerContent.appendChild(genStructureOverview(obj, title,overTF));
+    
+      //Create the topline metrics and map 
+      var toplineAndMap = document.createElement("div"); 
+      toplineAndMap.className = "headBox"; 
+      toplineAndMap.id = "headBox"; 
+      toplineAndMap.appendChild(genToplineMetrics(obj, mapShow, overTF, title));
+
+
+      //Create the map box
+      if (mapShow){
+        var mapBox = document.createElement("div"); 
+        mapBox.className = "mapBox";
+
+        let img = document.createElement("img")
+        img.className = "Heatmap";
+        img.src = "heat.png";
+        mapBox.appendChild(img);
+
+        toplineAndMap.appendChild(mapBox);
+      }
+      else{ }
+
+      //Create the topline metrics and the map space
+      centerContent.appendChild(toplineAndMap); 
+
+      //Create some Spacers
+      createSpacer(centerContent);
+      centerContent.appendChild(setTimeline());
+      createSpacer(centerContent);
+
+      //Create the donuts
+      centerContent.appendChild(genDonuts(numDonuts =2));
+
+      //Create some Spacers
+      createSpacer(centerContent);
+      //createSpacer(centerContent);
+
+      //Create the Tables
+
+
+      let tableArea = document.createElement("div");
+      tableArea.className = "tableArea";
+      tableArea.id = "tableArea";
+
+      let tableData;
+      let count = 0;
+      for (let s of obj["Subevents"]){
+        if(s["Name"]==subevent_name){
+          tableDatas = obj["Subevents"][count]["Tables"];
+        }
+      }
+
+      let bannedMetrics = ["event","id","Time Registered","Session Start","Session End"];
+      for (tableData of Object.keys(tableDatas)){
+        if( !bannedMetrics.includes(tableData)){
+         tableArea.appendChild(tablify(tableDatas[tableData], tableData));
+        }
+      }
+      
+      centerContent.appendChild(tableArea);
+
+      //add all the pieces to the dashboard
+      dashboard.appendChild(leftBuffer);
+      dashboard.appendChild(centerContent);
+      dashboard.appendChild(rightBuffer);
+
+      //add the dashboard to the DOM
+      c.appendChild(dashboard);
+
+      // Set formatting and fill charts
+      setLayoutToplineMap(mapShow);
+      setDonutContent(obj, overTF,title);
+      timeline("timeline",subevent_name)
+
+    }
+
+    function generateData(){
+      var data = []
+      var start = 1000;
+      for (var i = 0; i < 100; i++){
+        data.push({x:i*50000,y:start})
+        let mult = 100;
+        start = Math.random()<.4?start-Math.random()*mult:start+Math.random()*mult;
+      }
+      return data
+    }
+
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function randBetween(min, max) {
+      return Math.floor(Math.random() * (max - min) ) + min;
+    }
+
+    function kFormatter(num) {
+      let abbvs = ["K","M","B","T","Q","Qi"];
+      let abbvsNums = [3,6,9,12,15,18];
+      return Math.abs(num) > 999 ? Math.sign(num)*((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
+    }
+
+    function pass_to_subevent(text){
+      genSubeventDashboard(text);
+//      alert(text);
+    }
+
+
+
+    /****
+    Below is the code for parsing the json data
+    ****/
+
+    Object.size = function(obj) {
+        var size = 0, key;
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) size++;
+        }
+        return size;
+    };
+
+
+    async function catchData() {
+      const response = await fetch('json_dump.json');
+      const data = await response.json();
+      return data
+    }
+
+    async function addDurations(json_data){ // In Minutes
+      let event_list = []
+      for (let i = 0; i < json_data.length; i++){
+        json_data[i]['Session Start'] = new Date(json_data[i]['Session Start']);
+        json_data[i]['Session End'] = new Date(json_data[i]['Session End']);
+
+        json_data[i]["Duration"] = (json_data[i]['Session End'] - json_data[i]['Session Start'])/60000;
+      }
+      return json_data
+    }
+
+    async function getEvents(json_data){
+
+      let event_list = []
+      for (let i = 0; i < json_data.length; i++){
+
+        let reg = json_data[i];
+        if(!event_list.includes(reg['event'])){
+          event_list.push(reg['event']);
+        }
+      }
+      return event_list 
+    }
+
+
+    async function getHeaders(json_data, event_list){
+
+      console.log(json_data.length)
+      let header_lists = {}
+      for (let i = 0; i < event_list.length; i++){ 
+        let header_list = [];
+        for (let j = 0; j < json_data.length; j++){
+          let reg = json_data[j];
+          let header_keys = Object.keys(reg);
+          for (let k = 0; k < header_keys.length; k++){
+
+            if (event_list[i] == reg['event']  && !header_list.includes(header_keys[k])){
+              header_list.push(header_keys[k]);
+            }
+          }
+        }
+        //console.log(header_list);
+        header_lists[event_list[i]] = header_list;
+      }
+      return header_lists
+    }
+
+    async function removeVersion(data){
+
+      for (row of data){
+        row["Browser"]=row["Browser"].replace(/\.|[0-9]/g, '');
+        row["Device Type"]=row["Device Type"].replace(/\.|[0-9]/g, '');
+
+
+      }
+      return data
+
+    }
+
+
+    /*
+    What I Want from this function is to create an object with the headers 
+    as the keys, and the unique value arrays for each.
+    */
+    async function getSubeventMetrics(json_data, event_list, headers){
+      // if !device in list of devices, add it to the object and increment by one
+      // if device in list of devices, then increment one to the id
+      let allMetrics = {}
+      for (let i = 0; i < Object.keys(headers).length; i++){ 
+        // Object.keys(headers)[i] is the event name
+        // Create a empty dictionary for this event 
+
+        let event_name = Object.keys(headers)[i];
+        let event_heads = headers[event_name];
+        let dict = {}
+        
+        for (let h = 0; h < event_heads.length; h++){
+          dict[event_heads[h]] = {}
+        }
+
+        //Cycle through every data point and if the event is correct, add to each list
+        //console.log(Object.keys(headers));
+        // Each event will have different headers
+
+        let unique_list = [];
+        for (let j = 0; j < json_data.length; j++){
+          let reg = json_data[j];
+          if (reg['event']==event_name){
+            //Reg is a dictionary
+            //console.log(Object.keys(reg).length);
+            for(let m = 0; m < Object.keys(reg).length; m++){
+              // Dict[ List of Dict [nth element]]
+              //pull the list from the dict for this event for this metric
+              //console.log()
+              
+              if(!(reg[Object.keys(reg)[m]] in dict[Object.keys(reg)[m]]) ){
+                dict[Object.keys(reg)[m]][reg[Object.keys(reg)[m]]] = 1;
+              }
+              else{
+                dict[Object.keys(reg)[m]][reg[Object.keys(reg)[m]]]++;
+              }
+            }
+          }
+        }
+        allMetrics[event_name]=dict
+      }
+      return allMetrics
+    }
+
+    async function allHeaders(headers){
+      let h = [] 
+      for(let k = 0; k < Object.keys(headers).length; k++){
+        for(let m = 0; m < Object.keys(headers[Object.keys(headers)[k]]).length; m++){
+          if(!h.includes(headers[Object.keys(headers)[k]][m])){
+            h.push(headers[Object.keys(headers)[k]][m]);
+          }
+        }
+      }
+      return h;
+    }
+
+
+
+    async function subeventMetricsNums(subeventMetrics,event_list){
+      let allMetrics ={}
+      for(let k = 0; k < event_list.length; k++){
+        let event = event_list[k];
+        let metrics = {}
+        for (m = 0; m < Object.keys(subeventMetrics[event]).length; m++){
+          metrics[Object.keys(subeventMetrics[event])[m]] = Object.size(subeventMetrics[event][Object.keys(subeventMetrics[event])[m]]);
+        }
+        allMetrics[event]=metrics
+      }
+      return allMetrics
+    }
+
+
+
+    async function getOverviewMetrics(json_data){
+      let uniqueKeys = Object.keys(Object.assign({}, ...json_data));
+      metrics={}
+      for (let m = 0; m < Object.keys(uniqueKeys).length; m++){
+        let metric = uniqueKeys[m];
+        var uniqueValues = json_data.map( (value) => value[metric]).filter( (value, index, _arr) => _arr.indexOf(value) == index);
+        metrics[metric]=uniqueValues.length
+      }
+      return metrics
+    }
+
+
+    async function createJSONExport(overviewData,subeventNums,subeventMetrics,json_data,timelineData){
+
+
+      let mainDonutData = {};
+
+
+
+      let exportJSON = {
+        "Client_Logo":"",
+        "Overview_Page":{
+          "Event":"", 
+          "Metrics":{},
+          // "Donut_Charts":[
+          //   {
+          //     "Donut_Flavor":"",
+          //     "Donut_Values":{}
+          //   },
+          // ],
+        },
+        "Subevents":[ 
+        ]
+      };
+
+      exportJSON["Overview_Page"]["Event"] = "Crowdstreet"; 
+      exportJSON["Overview_Page"]["Metrics"] = overviewData;
+      exportJSON["Overview_Page"]["Metrics"]["Number of Registrations"]=json_data.length;
+      let count = 0;
+
+      let browsers = [];
+      let deviceTypes = [];
+      for (let event in subeventNums){
+
+        browsers.push(subeventMetrics[event]["Browser"]);
+        deviceTypes.push(subeventMetrics[event]["Device Type"]);
+
+        let durAndAtt = getAverageDuration(event,json_data);
+        let metrics = subeventNums[event];
+        let tables = subeventMetrics[event];
+        let donuts = getDonuts(subeventMetrics[event]);
+        let durations = getDurationRanges(subeventMetrics[event]["Duration"]); 
+        let timeline = timelineData[event];
+        tables["Duration"] = durations;
+        metrics["Number of Registrations"]=getRegistrationNum(event,json_data);
+        metrics["Average Duration"]=durAndAtt[0];
+        metrics["Attendees"]=durAndAtt[1]
+        exportJSON["Subevents"].push(
+          {
+            "Name": event,
+            "Event_Start":"BROADCAST_START",
+            "Event_END":"BROADCAST_END",
+            "Metrics":metrics,
+            "Donut_Charts":donuts,
+            "Comments":getComments(event,json_data),
+            "Tables":tables,
+            "Timeline":timeline
+          }); 
+        //console.log(subeventMetrics[event])
+       }
+
+       //console.log(subeventMetrics[event]);s
+
+       let finalDict = {}
+       finalDict["Browser"] = getMetricDonutDict(browsers,"Browser")["Browser"];
+       finalDict["Device Type"] = getMetricDonutDict(deviceTypes,"Device Type")["Device Type"];
+
+       console.log(getDonuts(finalDict));
+
+
+       exportJSON["Overview_Page"]["Donut_Charts"] = getDonuts(finalDict);
+
+      //console.log(uniqueKeys(browsers) , uniqueKeys(deviceTypes));
+
+      return exportJSON
+    }
+
+
+    function getMetricDonutDict(data,metric){
+      //console.log(data)
+      let finalDict = {};
+      finalDict[metric]={};
+      for (key of uniqueKeys(data)){
+        let keyCount = 0;
+        for (dict of data){
+          if(Object.keys(dict).includes(key)){
+            if(Object.keys(finalDict[metric]).includes(key)){
+                finalDict[metric][key]+=data[keyCount][key];
+            }
+            else{
+              let n = data[keyCount][key];
+              finalDict[metric][key] = n;
+            }
+          }
+          keyCount++;
+        }
+      }
+
+      //With the dict filled out, only take the top 6 and put the rest in "OTHER"
+      let donutLabelLimit = 6
+
+      if(Object.size(finalDict[metric])>donutLabelLimit){
+        let other = 0;
+        let values = Object.values(finalDict[metric]);
+        let sortValues = values.sort(function(a, b) {
+          return a - b;
+        }).reverse();
+        for (let key of Object.keys(finalDict[metric])) {
+          if (finalDict[metric][key]<sortValues[donutLabelLimit-1]){
+            other += parseInt(finalDict[metric][key]);
+            delete finalDict[metric][key];
+          }
+        }
+        finalDict[metric]["Other"] = other;
+
+
+      }
+      return finalDict
+    }
+    function uniqueKeys(data){
+      var uniqueKeys = Object.keys(data.reduce(function(result, obj) {
+        return Object.assign(result, obj);
+      }, {}))
+
+      return uniqueKeys
+    } 
+
+
+    function getDonuts(data){
+      
+        let donuts = []
+        let labels = ["Browser", "Device Type"]
+        for (let i = 0; i < 2; i++){
+          let donut = {};
+          donut["Donut_Flavor"] = labels[i];
+          donut["Donut_Values"] = data[labels[i]];
+          donuts.push(donut);
+        } 
+        return donuts
+    }
+
+
+
+    function addMinutes(date, minutes) {
+      return new Date(date.getTime() + minutes*60000);
+    }
+
+
+
+    function getComments(event,json_data){
+      comments = [];
+      for (let i in json_data){
+        let reg = json_data[i];
+        if (Object.keys(reg).includes('Comments')){
+          if (reg["Comments"] != "undefined" && reg["event"] == event){
+            comments.push(reg["Comments"]);
+          }
+        }
+      }
+      return comments
+    }
+
+
+    function getRegistrationNum(event,json_data){
+      let registrationNum = 0;
+      for (let i in json_data){
+        let reg = json_data[i];
+        if (reg['event']==event){
+          registrationNum ++;
+        }
+      }
+      return registrationNum;
+    }
+
+
+    function getAverageDuration(event,json_data){
+      let durationSum = 0;
+      let attendCount = 0;
+      for (let i in json_data){
+        let reg = json_data[i];
+        if (reg['event']==event && reg['Duration'] > 0){
+          durationSum+=reg['Duration'];
+          attendCount++;
+        }
+      }
+      //console.log(durationSum/attendCount,attendCount);
+      return [Math.round(durationSum/attendCount),attendCount];
+    }
+    function getDurationRanges(durations){
+      let durs = Object.keys(durations).map(Number);
+
+      const numRanges = 10;
+      const maxDur = Math.max(...durs);
+      const minDur = Math.min(...durs);
+      const rangeInterval = Math.ceil((maxDur-minDur)/numRanges);
+
+      let rangesLabels = [];
+      let rangesValues = [];
+
+      for (let i = 0; i < numRanges; i++){
+        let upperRange = (i+1)*rangeInterval;
+        let lowerRange = i*rangeInterval+1;
+        rangesLabels.push(`${lowerRange} - ${upperRange}`)
+        rangesValues.push([lowerRange,upperRange])
+      }
+      
+      binifiedDurations = {};
+      for (let range of rangesLabels){
+        binifiedDurations[range] = 0;
+      }
+      binifiedDurations[0]=0;
+
+      
+      
+      for( let dur of durs){
+        for (let r in rangesValues){
+          if (dur >= rangesValues[r][0] && dur <= rangesValues[r][1]){
+            binifiedDurations[rangesLabels[r]] += durations[dur];
+          }
+        }
+        if (dur == 0){
+          binifiedDurations[0] += durations[dur];
+        }
+      }
+      
+      return binifiedDurations;
+      //console.log(ranges)
+      //***
+    }
+
+
+
+    async function timelineDate(json_data, event_list){
+      let allTimeData={}
+
+      //Separates the json_data into each subevent
+
+      let timeline = {}
+      for (let i in json_data){
+        let reg = json_data[i];
+        if (!Object.keys(allTimeData).includes(reg['event'])){
+          allTimeData[reg['event']]=[];
+        }
+        allTimeData[reg['event']].push([reg["Session Start"],reg["Session End"]])
+      }
+
+
+
+      // Finds the min and max times for each event
+      for (let event of event_list){  
+        let startDates = [];
+        let endDates = [];
+        for (let t of allTimeData[event]){
+          startDates.push(t[0]);
+          endDates.push(t[1]);
+        }
+
+        let min = endDates.reduce(function (a, b) { return a < b ? a : b; }); 
+        let max = startDates.reduce(function (a, b) { return a > b ? a : b; });
+
+
+        let numIntervals = 10;
+        let intervalSize = (max - min)/numIntervals/60000;
+        let intervals = [];
+        for(let i = 0; i < numIntervals+1; i++){
+          intervals.push(addMinutes(min, i*intervalSize));
+        }
+
+        attended = []
+        let eventTimeline = []
+        for(let i = 0; i < intervals.length; i++){
+
+          //intervals.push(addMinutes(min, i*intervalSize));
+          attended.push([]);
+          for (let t of allTimeData[event]){
+            if (t[0] >= intervals[i] && t[1] <= intervals[i+1]){
+              attended[i].push(1);
+            }
+            else{
+              attended[i].push(0);
+            }
+          }
+
+
+          let totalAttended = attended[i].reduce((a, b) => a + b, 0);
+          //console.log(totalAttended)
+          eventTimeline.push({x: intervals[i].getTime()/1000, y: totalAttended})
+          
+        }
+        timeline[event] = eventTimeline
+
+        
+        // console.log(min);
+        // console.log(intervals);
+        // console.log(max);
+        // console.log(" ");
+      } 
+      //console.log(allTimeData)
+      return timeline;
+    }
+
+    //str.replace(/\.|[0-9]|\s+|\s+$/g, '');
+
+    async function dataBlender(){
+      const json_data = await catchData();
+      
+      const json_data_duration = await addDurations(json_data);
+      const updated_json_data =await removeVersion(json_data_duration);
+      const event_list = await getEvents(updated_json_data);
+      const headers = await getHeaders(updated_json_data, event_list);
+      //const allMetrics = await allHeaders(headers);
+      const subeventMetrics = await getSubeventMetrics(updated_json_data, event_list, headers); //Ready for Export
+      
+      //console.log(subeventMetrics);
+      const subeventNums = await subeventMetricsNums(subeventMetrics,event_list); //Ready for Export
+
+      //console.log(subeventMetrics);
+      const overviewData = await getOverviewMetrics(updated_json_data);
+
+      //console.log(overviewData);
+      const timelineData = await timelineDate(updated_json_data, event_list);
+
+      console.log(timelineData);
+      const JSONExport = await createJSONExport(overviewData,subeventNums,subeventMetrics,updated_json_data, timelineData);
+      return JSONExport
+
+      // The metrics that are going to be consistant
+      // num events, num registrations, num attendies > 0, Interaction Score, Average duration, Watch time,  
+
+      //const getOverviewMetrics
+
+    }
+    
+    async function main(){
+      obj = await dataBlender();
+      genOverviewDashboard()
+    }
+
+
+
+
+
+
+
+
+ // var obj = {
+    //   "Client_Logo":"LOGO_SRC",
+    //   "Overview_Page":{
+    //     "Event":"Test Extravaganza", 
+    //     "Metrics":{
+    //         "Events":"4",
+    //         "Registrations":"123404",
+    //         "Languages":"3",
+    //         "WatchParty":"12032",
+    //         "Regions":"3",
+    //         "Countries":"16",
+    //         "No Shows":"4201",
+    //         "Donations":"450323",
+    //        "Interaction Score":"7.5",
+    //       },
+
+        
+
+    //     "Donut_Charts":[
+    //       {
+    //         "Donut_Flavor":"Regions",
+    //         "Donut_Values":{
+    //           "Africa":"103",
+    //           "Europe":"521",
+    //           "Latin America":"97",
+    //           "North America":"108",
+    //         }
+    //       },
+    //       {
+    //         "Donut_Flavor":"Languages",
+    //         "Donut_Values":{ 
+    //           "English":"126",
+    //           "Spanish":"693",
+    //           "German":"321",
+    //         }
+    //       },
+    //       {
+    //         "Donut_Flavor":"Countries",
+    //         "Donut_Values":{
+    //           "USA":"103",
+    //           "Mexico":"521",
+    //           "Germany":"97",
+    //           "Brazil":"108",
+    //           "North Korea":"18"
+    //         }
+    //       }
+    //     ],
+
+    //     "Meat_Map":{
+    //       "Label1":"VALUE1",
+    //     }
+    //   },
+
+
+
+
+
+
+
+
+    //   "Subevents":[
+    //     {
+    //       "Name":"First Event",
+    //       "Event_Start":"BROADCAST_START",
+    //       "Event_END":"BROADCAST_END",
+          
+    //       "Metrics":{
+    //           "Registrations":"1404",
+    //           "Languages":"3",
+    //           "WatchParty":"1232",
+    //           "Regions":"3",
+    //           "Countries":"16",
+    //           "No Shows":"2301",
+    //           "Donations":"40323",
+    //           "Interaction Score":"8.2"
+    //       },
+
+
+    //       "Donut_Charts":[
+    //         {
+    //           "Donut_Flavor":"Regions",
+    //           "Donut_Values":{
+    //             "Africa":"13",
+    //             "Europe":"51",
+    //             "Latin America":"7",
+    //             "North America":"10",
+    //           }
+    //         },
+    //         {
+    //           "Donut_Flavor":"Languages",
+    //           "Donut_Values":{ 
+    //             "English":"16",
+    //             "Spanish":"93",
+    //             "German":"321",
+    //           }
+    //         },
+    //         {
+    //           "Donut_Flavor":"Countries",
+    //           "Donut_Values":{
+    //             "USA":"10",
+    //             "Mexico":"51",
+    //             "Germany":"7",
+    //             "Brazil":"8",
+    //             "North Korea":"18"
+    //           }
+    //         }
+    //       ],
+
+    //     },
+
+
+
+
+
+
+
+
+    //     {
+    //       "Name":"Second Event",
+    //       "Event_Start":"BROADCAST_START",
+    //       "Event_END":"BROADCAST_END",
+          
+    //       "Metrics":{
+    //           "Registrations":"140",
+    //           "Languages":"2",
+    //           "WatchParty":"232",
+    //           "Regions":"1",
+    //           "Countries":"10",
+    //           "No Shows":"231",
+    //           "Donations":"59323",
+    //           "Interaction Score":"6.2"
+    //       },
+    //       "Donut_Charts":[
+    //         {
+    //           "Donut_Flavor":"Regions",
+    //           "Donut_Values":{
+    //             "Africa":"1023",
+    //             "Europe":"51",
+    //             "Latin America":"97",
+    //             "North America":"108",
+    //           }
+    //         },
+    //         {
+    //           "Donut_Flavor":"Languages",
+    //           "Donut_Values":{ 
+    //             "English":"1263",
+    //             "Spanish":"693",
+    //             "German":"121",
+    //           }
+    //         },
+    //         {
+    //           "Donut_Flavor":"Countries",
+    //           "Donut_Values":{
+    //             "USA":"103",
+    //             "Mexico":"141",
+    //             "Germany":"97",
+    //             "Brazil":"108",
+    //             "North Korea":"18"
+    //           }
+    //         }
+    //       ],
+    //     },
+
+
+
+
+
+
+
+
+    //     {
+    //       "Name":"Third Event",
+    //       "Event_Start":"BROADCAST_START",
+    //       "Event_END":"BROADCAST_END",
+          
+    //       "Metrics":{
+    //           "Registrations":"1204",
+    //           "Languages":"1",
+    //           "WatchParty":"1282",
+    //           "Regions":"1",
+    //           "Countries":"5",
+    //           "No Shows":"1101",
+    //           "Donations":"7323",
+    //           "Interaction Score":"7.4"
+    //       },
+    //       "Donut_Charts":[
+    //         {
+    //           "Donut_Flavor":"Regions",
+    //           "Donut_Values":{
+    //             "Africa":"103",
+    //             "Europe":"561",
+    //             "Latin America":"97",
+    //             "North America":"1080",
+    //           }
+    //         },
+    //         {
+    //           "Donut_Flavor":"Languages",
+    //           "Donut_Values":{ 
+    //             "English":"126",
+    //             "Spanish":"6931",
+    //             "German":"321",
+    //           }
+    //         },
+    //         {
+    //           "Donut_Flavor":"Countries",
+    //           "Donut_Values":{
+    //             "USA":"103",
+    //             "Mexico":"521",
+    //             "Germany":"197",
+    //             "Brazil":"108",
+    //             "North Korea":"18"
+    //           }
+    //         }
+    //       ],
+    //     },
+
+
+
+
+
+    //     {
+    //       "Name":"Fouth Event",
+    //       "Event_Start":"BROADCAST_START",
+    //       "Event_END":"BROADCAST_END",
+          
+    //       "Metrics":{
+    //           "Registrations":"1910",
+    //           "Languages":"3",
+    //           "WatchParty":"1277",
+    //           "Regions":"35",
+    //           "Countries":"164",
+    //           "No Shows":"23012",
+    //           "Donations":"403213",
+    //           "Interaction Score":"9.2"
+    //       },
+    //       "Donut_Charts":[
+    //         {
+    //           "Donut_Flavor":"Regions",
+    //           "Donut_Values":{
+    //             "Africa":"1403",
+    //             "Europe":"521",
+    //             "Latin America":"97",
+    //             "North America":"108",
+    //           }
+    //         },
+    //         {
+    //           "Donut_Flavor":"Languages",
+    //           "Donut_Values":{ 
+    //             "English":"126",
+    //             "Spanish":"6093",
+    //             "German":"321",
+    //           }
+    //         },
+    //         {
+    //           "Donut_Flavor":"Countries",
+    //           "Donut_Values":{
+    //             "USA":"103",
+    //             "Mexico":"521",
+    //             "Germany":"97",
+    //             "Brazil":"108",
+    //             "North Korea":"1028"
+    //           }
+    //         }
+    //       ],
+    //     },
+    //   ]
+    // }
+  </script> 
+
+
+</head> 
+
+
+<body class="body" onload="main()"> </body> 
+<!-- <body class="body" onload ="genOverviewDashboard()"> </body>  -->
+
+
+</html> 
+
+
+
+
+
+
+
+
+
+
