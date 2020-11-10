@@ -334,7 +334,7 @@
 
 
     let obj;
-
+    let settings;
 
     function createSpacer(e){
       var spacer = document.createElement("div");
@@ -407,10 +407,13 @@
       labels = [];
 
       //console.log(Top_Level_Metrics);
+      let bannedToplineMetricsOverview = settings["Banned Metrics Overview"];
       for (let metric of Object.keys(Top_Level_Metrics)){
-      //for (let metric of Top_Level_Metrics){
-        data.push(Top_Level_Metrics[metric]);
-        labels.push(metric);
+
+        if( !bannedToplineMetricsOverview.includes(metric)){
+          data.push(Top_Level_Metrics[metric]);
+          labels.push(metric);
+        }
         //console.log(metric["Metric_Name"]);
       }
       //console.log(data,labels);
@@ -516,7 +519,7 @@
       let subeventMetricNames = []//subeventMetricNamesAll;//[];
       let subeventValues = []//subeventValuesAll//[];
 
-      let index_metrics = [2,3,9,8];
+      let index_metrics = settings["Subevent Header"];//[2,3,9,8];
 
       for (let sv of subeventValuesAll){
         let value_array=[]
@@ -537,44 +540,45 @@
         subeventValues.push(value_array);
       }
 
-
+      bannedSubevents = settings["Banned Subevents"];
+      console.log(bannedSubevents)
       for(let i = 0; i < subeventNames.length + 1; i++){
-        var subevent= document.createElement("div");
-        subevent.className = i>0 ? "subevent data" : "subevent header";
+        if(!bannedSubevents.includes(subeventNames[i-1])){
+          console.log(subeventNames[i-1]===bannedSubevents[0],subeventNames[i-1],bannedSubevents[0],)
+          let subevent= document.createElement("div");
+          subevent.className = i>0 ? "subevent data" : "subevent header";
 
 
-        subevent.id = i>0 ?  subeventNames[i-1]: "subevent header";
+          subevent.id = i>0 ?  subeventNames[i-1]: "subevent header";
 
-        subevent.addEventListener('click', function () {
-        i>0 ? pass_to_subevent(this.id) : null;
-        });
-        
-  
-
-
-        for(let j = 0; j < subeventMetricNames.length+1; j++){
-          var submetric= document.createElement("div");
-          if (i==0 && j!=0){
-            submetric.innerText = subeventMetricNames[j-1];
-            submetric.className = "submetricName";
-          }
-          else if (j==0 && i!=0){
-            submetric.innerText = subeventNames[i-1];
-            submetric.className = "submetricNum";
-          }
-          else if (j==0 && i==0){
-            submetric.innerText = "";
-          }
-
-          else{
-            submetric.innerText = numberWithCommas(subeventValues[i-1][j-1]);
-            submetric.className = "submetricValue";
-          }
+          subevent.addEventListener('click', function () {
+          i>0 ? pass_to_subevent(this.id) : null;
+          });
           
-          
-          subevent.appendChild(submetric);
+          for(let j = 0; j < subeventMetricNames.length+1; j++){
+            let submetric= document.createElement("div");
+            if (i==0 && j!=0){
+              submetric.innerText = subeventMetricNames[j-1];
+              submetric.className = "submetricName";
+            }
+            else if (j==0 && i!=0){
+              submetric.innerText = subeventNames[i-1];
+              submetric.className = "submetricNum";
+            }
+            else if (j==0 && i==0){
+              submetric.innerText = "";
+            }
+
+            else{
+              submetric.innerText = numberWithCommas(subeventValues[i-1][j-1]);
+              submetric.className = "submetricValue";
+            }
+            
+            
+            subevent.appendChild(submetric);
+          }
+          subevents.appendChild(subevent);
         }
-        subevents.appendChild(subevent);
       }
       return subevents;
     }
@@ -651,7 +655,7 @@
 
 
 
-   function donutChart(elementId,label, labels, values){
+    function donutChart(elementId,label, labels, values){
         
       canvas = document.getElementById(elementId);
             // var myCanvas = document.getElementById(elementId);
@@ -861,6 +865,7 @@
 
 
     function genOverviewDashboard(){ 
+      console.log(settings);
       var c = document.body; // whatever you want to append the rows to: 
       let overTF = true;
       let mapShow = false;
@@ -1015,9 +1020,9 @@
         }
       }
 
-      let bannedMetrics = ["event","id","Time Registered","Session Start","Session End"];
+      let bannedTables = settings["Banned Tables Subevent"];
       for (tableData of Object.keys(tableDatas)){
-        if( !bannedMetrics.includes(tableData)){
+        if( !bannedTables.includes(tableData)){
          tableArea.appendChild(tablify(tableDatas[tableData], tableData));
         }
       }
@@ -1084,8 +1089,8 @@
     };
 
 
-    async function catchData() {
-      const response = await fetch('json_dump.json');
+    async function catchData(file) {
+      const response = await fetch(file);
       const data = await response.json();
       return data
     }
@@ -1116,8 +1121,6 @@
 
 
     async function getHeaders(json_data, event_list){
-
-      console.log(json_data.length)
       let header_lists = {}
       for (let i = 0; i < event_list.length; i++){ 
         let header_list = [];
@@ -1304,10 +1307,6 @@
        let finalDict = {}
        finalDict["Browser"] = getMetricDonutDict(browsers,"Browser")["Browser"];
        finalDict["Device Type"] = getMetricDonutDict(deviceTypes,"Device Type")["Device Type"];
-
-       console.log(getDonuts(finalDict));
-
-
        exportJSON["Overview_Page"]["Donut_Charts"] = getDonuts(finalDict);
 
       //console.log(uniqueKeys(browsers) , uniqueKeys(deviceTypes));
@@ -1337,7 +1336,8 @@
       }
 
       //With the dict filled out, only take the top 6 and put the rest in "OTHER"
-      let donutLabelLimit = 6
+      console.log(settings)
+      let donutLabelLimit = settings["Donut Limit"];
 
       if(Object.size(finalDict[metric])>donutLabelLimit){
         let other = 0;
@@ -1542,8 +1542,8 @@
     //str.replace(/\.|[0-9]|\s+|\s+$/g, '');
 
     async function dataBlender(){
-      const json_data = await catchData();
-      
+      const json_data = await catchData('json_dump.json');
+      settings =  await catchData('settings.json');
       const json_data_duration = await addDurations(json_data);
       const updated_json_data =await removeVersion(json_data_duration);
       const event_list = await getEvents(updated_json_data);
@@ -1560,7 +1560,6 @@
       //console.log(overviewData);
       const timelineData = await timelineDate(updated_json_data, event_list);
 
-      console.log(timelineData);
       const JSONExport = await createJSONExport(overviewData,subeventNums,subeventMetrics,updated_json_data, timelineData);
       return JSONExport
 
@@ -1573,246 +1572,10 @@
     
     async function main(){
       obj = await dataBlender();
-      genOverviewDashboard()
+      
+      genOverviewDashboard();
     }
 
-
-
-
- // var obj = {
-    //   "Client_Logo":"LOGO_SRC",
-    //   "Overview_Page":{
-    //     "Event":"Test Extravaganza", 
-    //     "Metrics":{
-    //         "Events":"4",
-    //         "Registrations":"123404",
-    //         "Languages":"3",
-    //         "WatchParty":"12032",
-    //         "Regions":"3",
-    //         "Countries":"16",
-    //         "No Shows":"4201",
-    //         "Donations":"450323",
-    //        "Interaction Score":"7.5",
-    //       },
-    //     "Donut_Charts":[
-    //       {
-    //         "Donut_Flavor":"Regions",
-    //         "Donut_Values":{
-    //           "Africa":"103",
-    //           "Europe":"521",
-    //           "Latin America":"97",
-    //           "North America":"108",
-    //         }
-    //       },
-    //       {
-    //         "Donut_Flavor":"Languages",
-    //         "Donut_Values":{ 
-    //           "English":"126",
-    //           "Spanish":"693",
-    //           "German":"321",
-    //         }
-    //       },
-    //       {
-    //         "Donut_Flavor":"Countries",
-    //         "Donut_Values":{
-    //           "USA":"103",
-    //           "Mexico":"521",
-    //           "Germany":"97",
-    //           "Brazil":"108",
-    //           "North Korea":"18"
-    //         }
-    //       }
-    //     ],
-
-    //     "Meat_Map":{
-    //       "Label1":"VALUE1",
-    //     }
-    //   },
-    //   "Subevents":[
-    //     {
-    //       "Name":"First Event",
-    //       "Event_Start":"BROADCAST_START",
-    //       "Event_END":"BROADCAST_END",
-          
-    //       "Metrics":{
-    //           "Registrations":"1404",
-    //           "Languages":"3",
-    //           "WatchParty":"1232",
-    //           "Regions":"3",
-    //           "Countries":"16",
-    //           "No Shows":"2301",
-    //           "Donations":"40323",
-    //           "Interaction Score":"8.2"
-    //       },
-
-
-    //       "Donut_Charts":[
-    //         {
-    //           "Donut_Flavor":"Regions",
-    //           "Donut_Values":{
-    //             "Africa":"13",
-    //             "Europe":"51",
-    //             "Latin America":"7",
-    //             "North America":"10",
-    //           }
-    //         },
-    //         {
-    //           "Donut_Flavor":"Languages",
-    //           "Donut_Values":{ 
-    //             "English":"16",
-    //             "Spanish":"93",
-    //             "German":"321",
-    //           }
-    //         },
-    //         {
-    //           "Donut_Flavor":"Countries",
-    //           "Donut_Values":{
-    //             "USA":"10",
-    //             "Mexico":"51",
-    //             "Germany":"7",
-    //             "Brazil":"8",
-    //             "North Korea":"18"
-    //           }
-    //         }
-    //       ],
-    //     },
-    //     {
-    //       "Name":"Second Event",
-    //       "Event_Start":"BROADCAST_START",
-    //       "Event_END":"BROADCAST_END",
-          
-    //       "Metrics":{
-    //           "Registrations":"140",
-    //           "Languages":"2",
-    //           "WatchParty":"232",
-    //           "Regions":"1",
-    //           "Countries":"10",
-    //           "No Shows":"231",
-    //           "Donations":"59323",
-    //           "Interaction Score":"6.2"
-    //       },
-    //       "Donut_Charts":[
-    //         {
-    //           "Donut_Flavor":"Regions",
-    //           "Donut_Values":{
-    //             "Africa":"1023",
-    //             "Europe":"51",
-    //             "Latin America":"97",
-    //             "North America":"108",
-    //           }
-    //         },
-    //         {
-    //           "Donut_Flavor":"Languages",
-    //           "Donut_Values":{ 
-    //             "English":"1263",
-    //             "Spanish":"693",
-    //             "German":"121",
-    //           }
-    //         },
-    //         {
-    //           "Donut_Flavor":"Countries",
-    //           "Donut_Values":{
-    //             "USA":"103",
-    //             "Mexico":"141",
-    //             "Germany":"97",
-    //             "Brazil":"108",
-    //             "North Korea":"18"
-    //           }
-    //         }
-    //       ],
-    //     },
-    //     {
-    //       "Name":"Third Event",
-    //       "Event_Start":"BROADCAST_START",
-    //       "Event_END":"BROADCAST_END",
-          
-    //       "Metrics":{
-    //           "Registrations":"1204",
-    //           "Languages":"1",
-    //           "WatchParty":"1282",
-    //           "Regions":"1",
-    //           "Countries":"5",
-    //           "No Shows":"1101",
-    //           "Donations":"7323",
-    //           "Interaction Score":"7.4"
-    //       },
-    //       "Donut_Charts":[
-    //         {
-    //           "Donut_Flavor":"Regions",
-    //           "Donut_Values":{
-    //             "Africa":"103",
-    //             "Europe":"561",
-    //             "Latin America":"97",
-    //             "North America":"1080",
-    //           }
-    //         },
-    //         {
-    //           "Donut_Flavor":"Languages",
-    //           "Donut_Values":{ 
-    //             "English":"126",
-    //             "Spanish":"6931",
-    //             "German":"321",
-    //           }
-    //         },
-    //         {
-    //           "Donut_Flavor":"Countries",
-    //           "Donut_Values":{
-    //             "USA":"103",
-    //             "Mexico":"521",
-    //             "Germany":"197",
-    //             "Brazil":"108",
-    //             "North Korea":"18"
-    //           }
-    //         }
-    //       ],
-    //     },
-    //     {
-    //       "Name":"Fouth Event",
-    //       "Event_Start":"BROADCAST_START",
-    //       "Event_END":"BROADCAST_END",
-          
-    //       "Metrics":{
-    //           "Registrations":"1910",
-    //           "Languages":"3",
-    //           "WatchParty":"1277",
-    //           "Regions":"35",
-    //           "Countries":"164",
-    //           "No Shows":"23012",
-    //           "Donations":"403213",
-    //           "Interaction Score":"9.2"
-    //       },
-    //       "Donut_Charts":[
-    //         {
-    //           "Donut_Flavor":"Regions",
-    //           "Donut_Values":{
-    //             "Africa":"1403",
-    //             "Europe":"521",
-    //             "Latin America":"97",
-    //             "North America":"108",
-    //           }
-    //         },
-    //         {
-    //           "Donut_Flavor":"Languages",
-    //           "Donut_Values":{ 
-    //             "English":"126",
-    //             "Spanish":"6093",
-    //             "German":"321",
-    //           }
-    //         },
-    //         {
-    //           "Donut_Flavor":"Countries",
-    //           "Donut_Values":{
-    //             "USA":"103",
-    //             "Mexico":"521",
-    //             "Germany":"97",
-    //             "Brazil":"108",
-    //             "North Korea":"1028"
-    //           }
-    //         }
-    //       ],
-    //     },
-    //   ]
-    // }
   </script> 
 
 
