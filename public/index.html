@@ -335,13 +335,6 @@
 
     let obj;
 
-    async function catchData() {
-      //const response = await fetch('json_dump.json');
-      const response = await fetch('../pull_json.js');
-      const data = await response.json();
-      return data
-    }
-
 
     function createSpacer(e){
       var spacer = document.createElement("div");
@@ -1506,7 +1499,7 @@
         let max = startDates.reduce(function (a, b) { return a > b ? a : b; });
 
 
-        let numIntervals = 50;
+        let numIntervals = 100;
         let intervalSize = (max - min)/numIntervals/60000;
         let intervals = [];
         for(let i = 0; i < numIntervals+1; i++){
