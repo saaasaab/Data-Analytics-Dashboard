@@ -162,7 +162,7 @@
       align-items: center;
       justify-content: flex-start;
       margin-right: 15px;
-      font-size: 1.3em;
+      font-size: 1em;
       word-wrap: break-word;
       color:var(--text-color);
     }
@@ -400,23 +400,20 @@
 
 
       //HOW DO I GET THE INDEX OF SUBEVENTS?
-
       let index = getSubeventIndex(obj, title, overTF);
       Top_Level_Metrics = overTF?obj["Overview_Page"]["Metrics"]:obj["Subevents"][index]["Metrics"];
       data = [];
       labels = [];
 
-      //console.log(Top_Level_Metrics);
-      let bannedToplineMetricsOverview = settings["Banned Metrics Overview"];
-      for (let metric of Object.keys(Top_Level_Metrics)){
 
+      let bannedToplineMetricsOverview = overTF?settings["Banned Metrics Overview"]:settings["Banned Metrics Subevent"];
+      
+      for (let metric of Object.keys(Top_Level_Metrics)){
         if( !bannedToplineMetricsOverview.includes(metric)){
           data.push(Top_Level_Metrics[metric]);
           labels.push(metric);
         }
-        //console.log(metric["Metric_Name"]);
       }
-      //console.log(data,labels);
 
       numElems = data.length;
       if(mapShow){
