@@ -1,0 +1,9 @@
+
+{
+	"Banned Metrics Overview":["event","id","Time Registered","Session Start","Session End","Time Registered","First Name"],
+	"Subevent Header":[2,3,9,8],
+	"Banned Subevents":["Spaulding & Slye Investments (SSI) discuss their 61 State Street project in Charleston  S.C."],
+	"Banned Metrics Subevent":["event","id","Time Registered","Session Start","Session End"],
+	"Banned Tables Subevent":["event","id","Time Registered","Session Start","Session End","Browser", "Device Type"],
+	"Donut Limit": 5
+}

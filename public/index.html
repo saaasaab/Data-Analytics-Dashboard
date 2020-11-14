@@ -13,15 +13,14 @@
       --main-bg-color: #262626;
       --text-color:rgba(210,210,210,1);
       --dark-shadow:6px 6px 8px 0 rgba(0,0,0,.2),
-        -4px -4px 6px 0 rgba(58, 58, 58, 0.3);;
-
+        -4px -4px 6px 0 rgba(58, 58, 58, 0.3);
     }
     .overview{
       display: grid;
       margin-left: 15px;
       grid-template-columns: 4fr 1fr;
-
     }
+
     .overview_name{
       /*border:1px solid #c3d1b4;*/
       color:var(--text-color);
@@ -538,7 +537,7 @@
       }
 
       bannedSubevents = settings["Banned Subevents"];
-      console.log(bannedSubevents)
+
       for(let i = 0; i < subeventNames.length + 1; i++){
         if(!bannedSubevents.includes(subeventNames[i-1])){
           console.log(subeventNames[i-1]===bannedSubevents[0],subeventNames[i-1],bannedSubevents[0],)
